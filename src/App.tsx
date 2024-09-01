@@ -1,13 +1,7 @@
 import { useRef, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+// import reactLogo from './assets/react.svg'
+// import viteLogo from '/vite.svg'
 import './App.css'
-
-interface Task {
-  id: number
-  label: string
-  isCompleted: boolean
-}
 
 function App() {
   const [tasks, setTask] = useState<string[]>([])
