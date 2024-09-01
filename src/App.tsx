@@ -1,35 +1,56 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
+interface Task {
+  id: number
+  label: string
+  isCompleted: boolean
+}
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [tasks, setTask] = useState<string[]>([])
+
+  const [inputValue, setInputValue] = useState<string>('')
+
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const [taskChecked, setTaskChecked] = useState<boolean>(false)
+
+  const addTask = () => {
+    if (inputValue.trim() === '') {
+      inputRef.current?.focus()
+      return;
+    }
+
+    setTask([...tasks, inputValue]);
+    setInputValue('')
+    inputRef.current?.focus()
+  }
+
+  const isChecked = () => {
+    setTaskChecked(!taskChecked)
+  }
 
   return (
     <>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <h1>Liste des tâches</h1>
+        <input type="text" ref={inputRef} value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
+        <input type="button" value="Ajouter" onClick={addTask} />
+
+        <div>
+          {tasks.map((task, index) => (
+            <div className='task'>
+              <input type="checkbox" name={task} id={task + index} onChange={isChecked} />
+              <label htmlFor={task + index} className={taskChecked ? 'taskChecked' : ''} key={index}>{task}</label>
+              <button type="button">Supprimer</button>
+            </div>
+          ))}
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </>)
 }
 
 export default App
