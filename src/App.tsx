@@ -7,7 +7,8 @@ function App() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [checkedTasks, setCheckedTasks] = useState<Set<number>>(new Set());
 
-  const addTask = () => {
+  const addTask = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     if (inputValue.trim() === '') {
       inputRef.current?.focus();
       return;
@@ -31,7 +32,7 @@ function App() {
   const deleteTask = (index: number) => {
     // Demander une confirmation avant de supprimer la tâche
     const confirmDelete = window.confirm('Êtes-vous sûr de vouloir supprimer cette tâche ?');
-    
+
     if (!confirmDelete) {
       return; // Annuler la suppression si l'utilisateur a cliqué sur "Annuler"
     }
@@ -50,7 +51,7 @@ function App() {
     <div className="min-h-screen bg-gray-100 flex flex-col items-center py-10">
       <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
         <h1 className="text-3xl font-bold text-center mb-6">Liste des tâches</h1>
-        <div className="flex items-center mb-4">
+        <form className="flex items-center mb-4">
           <input
             type="text"
             ref={inputRef}
@@ -65,7 +66,7 @@ function App() {
           >
             Ajouter
           </button>
-        </div>
+        </form>
 
         <div>
           {tasks.map((task, index) => (
